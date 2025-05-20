@@ -1,5 +1,6 @@
 package portifolio.eltonlira.rummye2e.stepdefinitions;
 
+import io.cucumber.java.pt.Dado;
 import io.cucumber.java.pt.Então;
 import io.cucumber.java.pt.Quando;
 import io.restassured.common.mapper.TypeRef;
@@ -46,4 +47,27 @@ public class RoomStepTest {
                 .anyMatch(r -> r.name().equalsIgnoreCase(nome)));
     }
 
+    @Dado("que a {string} existe")
+    public void queAExiste(String roomName) {
+
+        //Get
+        var rooms = rest.givenBackend()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .get("/rooms")
+                .then()
+                .statusCode(200)
+                .extract()
+                .as(new TypeRef<List<RoomDto>>() {});
+
+
+
+        var room = rooms.stream()
+                .filter(r -> r.name().equalsIgnoreCase(roomName))
+                .findFirst();
+
+        assertTrue(room.isPresent());
+
+        scenarioContext.put("roomId",room.get().id());
+
+    }
 }
