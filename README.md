@@ -1,1 +1,1 @@
-# rummyE2E - TESTES SUBCULTANEOS
+# rummyE2E
